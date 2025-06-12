@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhruv Agarwal - Financial Tools Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            /* Ensure html and body take full viewport height */
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
+
+        #root {
+            height: 100%;
+            /* Make root take full height */
+            display: flex;
+            /* Flex container for sidebar and main content */
+            flex-direction: column;
+            /* Default to column for small screens, row for large handled by main App */
+            flex-grow: 1;
+            /* Allow root to grow */
+        }
+
+        /* Custom scrollbar for content areas */
+        .scroll-area::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            /* For horizontal scroll if needed */
+        }
+
+        .scroll-area::-webkit-scrollbar-track {
+            background: #1a202c;
+            /* gray-900 */
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+            /* gray-600 */
+            border-radius: 10px;
+            border: 2px solid #1a202c;
+        }
+
+        /* Mobile nav transition */
+        .mobile-nav-enter {
+            transform: translateX(-100%);
+        }
+
+        .mobile-nav-enter-active {
+            transform: translateX(0%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .mobile-nav-exit {
+            transform: translateX(0%);
+        }
+
+        .mobile-nav-exit-active {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 antialiased flex h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // --- SVG Icon Helpers (Similar to Lucide) ---
+        const createSvgIcon = (d, viewBox = "0 0 24 24") => (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox={viewBox}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide"
+            >
+                <path d={d} />
+            </svg>
+        );
+
+        const HomeIcon = (props) => React.cloneElement(createSvgIcon("M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10"), {className: props.className});
+        const WalletIcon = (props) => React.cloneElement(createSvgIcon("M19 7V4a1 1 0 0 0-1-1H2a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16a1 1 0 0 0 1-1v-2h-3a2 2 0 0 1 0-4h3a1 1 0 0 0 1-1V7h0zM19 4v3h-2V4h2zM2 13v-2h6v2H2z"), {className: props.className});
+        const CalculatorIcon = (props) => React.cloneElement(createSvgIcon("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM9 16h6V8H9z"), {className: props.className});
+        const LineChartIcon = (props) => React.cloneElement(createSvgIcon("M3 16a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2zM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"), {className: props.className});
+        const CreditCardIcon = (props) => React.cloneElement(createSvgIcon("M18 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM4 11h16M17 17h.01"), {className: props.className});
+        const MenuIcon = (props) => React.cloneElement(createSvgIcon("M4 12h16M4 6h16M4 18h16"), {className: props.className});
+        const XIcon = (props) => React.cloneElement(createSvgIcon("M18 6L6 18M6 6l12 12"), {className: props.className});
+        const UserIcon = (props) => React.cloneElement(createSvgIcon("M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"), {className: props.className});
+        const ZapIcon = (props) => React.cloneElement(createSvgIcon("M13 2L3 14h9l-1 8 10-12h-9l1-8z"), {className: props.className});
+        const CurrencyRupeeIcon = (props) => React.cloneElement(createSvgIcon("M8 7h4c1.7 0 3 1.3 3 3s-1.3 3-3 3H8M8 17h4c1.7 0 3 1.3 3 3s-1.3 3-3 3H8M8 10v7M17 7L9 22M17 2v5h-2"), {className: props.className});
+        const PlusCircleIcon = (props) => React.cloneElement(createSvgIcon("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 8v8M8 12h8"), {className: props.className});
+        const TrendingUpIcon = (props) => React.cloneElement(createSvgIcon("M22 7l-9.5 9.5-5-5L2 17"), {className: props.className}); // Added for Market Trends Visualizer
+        const BarChart2Icon = (props) => React.cloneElement(createSvgIcon("M18 20V10M12 20V4M6 20v-6"), {className: props.className});
+        const EditIcon = (props) => React.cloneElement(createSvgIcon("M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"), {className: props.className});
+        const TrashIcon = (props) => React.cloneElement(createSvgIcon("M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"), {className: props.className});
+
+
+        // --- PennyWise AI Component ---
+        function PennyWiseAI() {
+            const expenseChartRef = React.useRef(null);
+            const savingsChartRef = React.useRef(null);
+            const expenseChartInstance = React.useRef(null);
+            const savingsChartInstance = React.useRef(null);
+
+            const [income, setIncome] = React.useState(35000); // Default in INR
+            const [expenses, setExpenses] = React.useState([
+                {id: 1, name: 'Housing', amount: 12000},
+                {id: 2, name: 'Food', amount: 6000},
+                {id: 3, name: 'Transport', amount: 3000},
+            ]);
+            const [savingsGoal, setSavingsGoal] = React.useState(100000);
+            const [currentSavings, setCurrentSavings] = React.useState(75000);
+
+            const [newExpenseName, setNewExpenseName] = React.useState('');
+            const [newExpenseAmount, setNewExpenseAmount] = React.useState('');
+
+            // Safely calculate total expenses, defaulting to 0 if expenses array is empty
+            const totalExpenses = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
+            const monthlySavings = income - totalExpenses;
+            const progressToGoal = savingsGoal > 0 ? (currentSavings / savingsGoal) * 100 : 0; // Handle division by zero
+            const projectedMonthsToGoal = monthlySavings > 0 ? (savingsGoal - currentSavings) / monthlySavings : 'N/A';
+
+            const addExpense = () => {
+                if (newExpenseName.trim() && Number(newExpenseAmount) > 0) {
+                    setExpenses([...expenses, {id: Date.now(), name: newExpenseName.trim(), amount: Number(newExpenseAmount)}]);
+                    setNewExpenseName('');
+                    setNewExpenseAmount('');
+                }
+            };
+
+            const deleteExpense = (idToDelete) => {
+                setExpenses(expenses.filter(exp => exp.id !== idToDelete));
+            };
+
+            const updateExpenseAmount = (idToUpdate, newAmount) => {
+                setExpenses(expenses.map(exp =>
+                    exp.id === idToUpdate ? {...exp, amount: Number(newAmount)} : exp
+                ));
+            };
+
+            React.useEffect(() => {
+                // Expense Chart
+                if (expenseChartInstance.current) {
+                    expenseChartInstance.current.destroy();
+                }
+                if (expenseChartRef.current) { // Defensive check: ensure canvas exists
+                    const expenseCtx = expenseChartRef.current.getContext('2d');
+                    expenseChartInstance.current = new Chart(expenseCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: expenses.map(exp => exp.name),
+                            datasets: [{
+                                data: expenses.map(exp => exp.amount),
+                                backgroundColor: ['#f87171', '#60a5fa', '#a78bfa', '#34d399', '#facc15', '#ef4444', '#10b981', '#f97316'],
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#d1d5db',
+                                        font: {size: 14}
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Expense Categories',
+                                    color: '#e5e7eb',
+                                    font: {size: 18, weight: 'bold'}
+                                },
+                                tooltip: { // Added for INR formatting in tooltip
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += '₹' + context.parsed.toLocaleString('en-IN');
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+                // Savings Chart
+                if (savingsChartInstance.current) {
+                    savingsChartInstance.current.destroy();
+                }
+                if (savingsChartRef.current) { // Defensive check: ensure canvas exists
+                    const savingsCtx = savingsChartRef.current.getContext('2d');
+                    savingsChartInstance.current = new Chart(savingsCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Current Savings', 'Savings Goal'],
+                            datasets: [{
+                                label: 'Amount (₹)',
+                                data: [currentSavings, savingsGoal],
+                                backgroundColor: ['#60a5fa', '#e5e7eb'],
+                                borderColor: ['#3b82f6', '#9ca3af'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {display: false},
+                                title: {
+                                    display: true,
+                                    text: 'Savings Goal Progress',
+                                    color: '#e5e7eb',
+                                    font: {size: 18, weight: 'bold'}
+                                },
+                                tooltip: { // Added for INR formatting in tooltip
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.y !== null) {
+                                                label += '₹' + context.parsed.y.toLocaleString('en-IN');
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {color: '#d1d5db', callback: (value) => `₹${value.toLocaleString('en-IN')}`}, // INR callback
+                                    grid: {color: '#374151'}
+                                },
+                                x: {
+                                    ticks: {color: '#d1d5db'},
+                                    grid: {color: '#374151'}
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+                return () => {
+                    expenseChartInstance.current?.destroy();
+                    savingsChartInstance.current?.destroy();
+                };
+            }, [expenses, currentSavings, savingsGoal, income]);
+
+            return (
+                <div className="flex-grow p-4 sm:p-6 lg:p-8 overflow-y-auto scroll-area">
+                    <h2 className="text-4xl font-bold text-white mb-8 flex items-center">
+                        <WalletIcon className="w-9 h-9 mr-3 text-cyan-400" /> PennyWise AI
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                            <p className="text-gray-400 text-lg">Total Income</p>
+                            <div className="flex items-center">
+                                <CurrencyRupeeIcon className="w-8 h-8 text-green-400 mr-2" />
+                                <input
+                                    type="number"
+                                    value={income}
+                                    onChange={(e) => setIncome(Number(e.target.value))}
+                                    className="w-full bg-gray-900 border border-gray-700 rounded py-2 px-3 text-white text-3xl font-extrabold focus:outline-none focus:border-blue-500"
+                                    min="0"
+                                />
+                            </div>
+                        </div>
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                            <p className="text-gray-400 text-lg">Total Expenses</p>
+                            <p className="text-4xl font-extrabold text-red-400">₹{totalExpenses.toLocaleString('en-IN')}</p>
+                        </div>
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                            <p className="text-gray-400 text-lg">Monthly Savings</p>
+                            <p className="text-4xl font-extrabold text-blue-400">₹{monthlySavings.toLocaleString('en-IN')}</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 mb-8">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Add New Expense</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <input
+                                type="text"
+                                placeholder="Expense Name (e.g., Groceries)"
+                                value={newExpenseName}
+                                onChange={(e) => setNewExpenseName(e.target.value)}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                            />
+                            <input
+                                type="number"
+                                placeholder="Amount (₹)"
+                                value={newExpenseAmount}
+                                onChange={(e) => setNewExpenseAmount(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                min="0"
+                            />
+                            <button
+                                onClick={addExpense}
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                            >
+                                <PlusCircleIcon className="w-5 h-5 mr-2" /> Add Expense
+                            </button>
+                        </div>
+                        <h3 className="text-xl font-semibold text-white mt-6 mb-2">Your Expenses:</h3>
+                        <ul className="divide-y divide-gray-700">
+                            {expenses.map(exp => (
+                                <li key={exp.id} className="flex items-center justify-between py-2">
+                                    <span className="text-gray-300 mr-2">{exp.name}: ₹</span>
+                                    <input
+                                        type="number"
+                                        value={exp.amount}
+                                        onChange={(e) => updateExpenseAmount(exp.id, e.target.value)}
+                                        className="bg-gray-900 border border-gray-700 rounded py-1 px-2 text-white flex-grow text-right focus:outline-none focus:border-blue-500"
+                                        min="0"
+                                    />
+                                    <button
+                                        onClick={() => deleteExpense(exp.id)}
+                                        className="ml-4 p-2 bg-red-600 hover:bg-red-700 rounded-lg text-white transition-colors duration-200"
+                                    >
+                                        <TrashIcon className="w-5 h-5" />
+                                    </button>
+                                </li>
+                            ))}
+                            {expenses.length === 0 && (
+                                <li className="text-gray-500 text-center py-4">No expenses added yet.</li>
+                            )}
+                        </ul>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 h-96">
+                            <canvas ref={expenseChartRef}></canvas>
+                        </div>
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 h-96">
+                            <canvas ref={savingsChartRef}></canvas>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 mb-8">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Savings Goal: ₹
+                            <input
+                                type="number"
+                                value={savingsGoal}
+                                onChange={(e) => setSavingsGoal(Number(e.target.value))}
+                                className="inline-block w-32 bg-gray-900 border border-gray-700 rounded py-1 px-2 text-white text-lg font-bold focus:outline-none focus:border-blue-500 ml-1"
+                                min="0"
+                            />
+                        </h3>
+                        <h3 className="2xl font-semibold text-white mb-4">Current Savings: ₹
+                            <input
+                                type="number"
+                                value={currentSavings}
+                                onChange={(e) => setCurrentSavings(Number(e.target.value))}
+                                className="inline-block w-32 bg-gray-900 border border-gray-700 rounded py-1 px-2 text-white text-lg font-bold focus:outline-none focus:border-blue-500 ml-1"
+                                min="0"
+                            />
+                        </h3>
+                        <div className="w-full bg-gray-700 rounded-full h-4 mb-2">
+                            <div
+                                className="bg-green-500 h-4 rounded-full"
+                                style={{width: `${Math.min(100, progressToGoal)}%`}}
+                            ></div>
+                        </div>
+                        <p className="text-gray-400 text-sm">Progress: {progressToGoal.toFixed(2)}%</p>
+                        {monthlySavings > 0 && (
+                            <p className="text-gray-400 text-sm mt-1">Projected Months to Goal: {projectedMonthsToGoal.toFixed(1)} months</p>
+                        )}
+                        {monthlySavings <= 0 && (
+                            <p className="text-red-400 text-sm mt-1">Saving less than spending. Adjust budget to reach goal.</p>
+                        )}
+                    </div>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Monthly Insights</h3>
+                        <ul className="list-disc list-inside text-gray-300 space-y-2">
+                            {expenses.length > 0 ? (
+                                <li>Your {expenses.reduce((prev, current) => (prev.amount > current.amount ? prev : current)).name} category is your largest expense. Consider reviewing spending here.</li>
+                            ) : (
+                                    <li>Add some expenses to get personalized insights!</li>
+                                )}
+                            <li>You are currently saving ₹{monthlySavings.toLocaleString('en-IN')} per month. Great progress towards your goal!</li>
+                            <li>Try allocating a small percentage more to savings next month to accelerate your goal.</li>
+                        </ul>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- CrediCalc Component ---
+        function CrediCalc() {
+            const [loanAmount, setLoanAmount] = React.useState(1000000); // In INR
+            const [interestRate, setInterestRate] = React.useState(7.5); // Annual percentage
+            const [loanTerm, setLoanTerm] = React.useState(60); // In months
+            const [salary, setSalary] = React.useState(50000); // In INR
+            const [loanType, setLoanType] = React.useState('Personal Loan');
+
+            const loanChartRef = React.useRef(null);
+            const loanChartInstance = React.useRef(null);
+
+            const calculateEMI = () => {
+                if (loanAmount <= 0 || interestRate < 0 || loanTerm <= 0) return 0; // Interest rate can be 0 for some scenarios
+                const monthlyRate = (interestRate / 12) / 100;
+                if (monthlyRate === 0) return loanAmount / loanTerm; // Handle 0% interest
+                const emi = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, loanTerm) / (Math.pow(1 + monthlyRate, loanTerm) - 1);
+                return isNaN(emi) ? 0 : emi;
+            };
+
+            const emi = calculateEMI();
+            const totalPayableAmount = emi * loanTerm;
+            const totalInterestPaid = totalPayableAmount - loanAmount;
+
+
+            const calculateApprovalLikelihood = () => {
+                if (salary <= 0 || emi === 0) return 'N/A';
+                const debtToIncomeRatio = (emi * 12) / (salary * 12); // Annual EMI vs Annual Salary
+
+                if (debtToIncomeRatio < 0.3) return 'High';
+                if (debtToIncomeRatio < 0.45) return 'Medium';
+                return 'Low';
+            };
+
+            const approvalLikelihood = calculateApprovalLikelihood();
+
+            React.useEffect(() => {
+                if (loanChartInstance.current) {
+                    loanChartInstance.current.destroy();
+                }
+                if (loanChartRef.current) { // Defensive check: ensure canvas exists
+                    const loanCtx = loanChartRef.current.getContext('2d');
+                    loanChartInstance.current = new Chart(loanCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Principal Amount', 'Total Interest Paid'],
+                            datasets: [{
+                                data: [loanAmount, totalInterestPaid],
+                                backgroundColor: ['#60a5fa', '#f87171'], // Blue for principal, Red for interest
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#d1d5db',
+                                        font: {size: 14}
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Loan Breakdown',
+                                    color: '#e5e7eb',
+                                    font: {size: 18, weight: 'bold'}
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += '₹' + context.parsed.toLocaleString('en-IN');
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+                return () => {
+                    loanChartInstance.current?.destroy();
+                };
+            }, [loanAmount, totalInterestPaid]);
+
+
+            return (
+                <div className="flex-grow p-4 sm:p-6 lg:p-8 overflow-y-auto scroll-area">
+                    <h2 className="text-4xl font-bold text-white mb-8 flex items-center">
+                        <CalculatorIcon className="w-9 h-9 mr-3 text-cyan-400" /> CrediCalc
+                    </h2>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 max-w-2xl mx-auto">
+                        <div className="mb-4">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="loanAmount">
+                                Loan Amount (₹)
+                            </label>
+                            <input
+                                type="number"
+                                id="loanAmount"
+                                value={loanAmount}
+                                onChange={(e) => setLoanAmount(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                placeholder="e.g., 1000000"
+                                min="0"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="interestRate">
+                                Annual Interest Rate (%)
+                            </label>
+                            <input
+                                type="number"
+                                id="interestRate"
+                                value={interestRate}
+                                onChange={(e) => setInterestRate(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                placeholder="e.g., 7.5"
+                                min="0" step="0.1"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="loanTerm">
+                                Loan Term (Months)
+                            </label>
+                            <input
+                                type="number"
+                                id="loanTerm"
+                                value={loanTerm}
+                                onChange={(e) => setLoanTerm(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                placeholder="e.g., 60"
+                                min="1"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="salary">
+                                Monthly Salary (₹)
+                            </label>
+                            <input
+                                type="number"
+                                id="salary"
+                                value={salary}
+                                onChange={(e) => setSalary(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                placeholder="e.g., 50000"
+                                min="0"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="loanType">
+                                Loan Type
+                            </label>
+                            <select
+                                id="loanType"
+                                value={loanType}
+                                onChange={(e) => setLoanType(e.target.value)}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                            >
+                                <option>Personal Loan</option>
+                                <option>Home Loan</option>
+                                <option>Car Loan</option>
+                                <option>Education Loan</option>
+                            </select>
+                        </div>
+
+                        <div className="mt-8 text-center bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <h3 className="text-2xl font-bold text-white mb-2">Estimated EMI</h3>
+                            <p className="text-4xl font-extrabold text-green-400">₹{emi.toFixed(2).toLocaleString('en-IN')}</p>
+                            <h3 className="text-2xl font-bold text-white mt-4 mb-2">Total Interest Payable</h3>
+                            <p className="text-4xl font-extrabold text-orange-400">₹{totalInterestPaid.toFixed(2).toLocaleString('en-IN')}</p>
+                            <h3 className="text-2xl font-bold text-white mt-4 mb-2">Total Payable Amount</h3>
+                            <p className="text-4xl font-extrabold text-purple-400">₹{totalPayableAmount.toFixed(2).toLocaleString('en-IN')}</p>
+                            <h3 className="text-2xl font-bold text-white mt-4 mb-2">Approval Likelihood (Mock)</h3>
+                            <p className="text-3xl font-extrabold text-blue-400">{approvalLikelihood}</p>
+                            {/* Placeholder for ML integration */}
+                            <p className="text-gray-500 text-sm mt-4">
+                                <ZapIcon className="w-4 h-4 inline-block mr-1" />
+                                *In a real scenario, approval likelihood would leverage ML models (e.g., TensorFlow.js) trained on historical data.*
+                            </p>
+                        </div>
+                    </div>
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 h-96 mt-8 max-w-2xl mx-auto">
+                        <canvas ref={loanChartRef}></canvas>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- PaySlipr Component (Replaces MarketTrendsVisualizer) ---
+        function PaySlipr() {
+            const [ctc, setCtc] = React.useState(1200000); // Annual CTC in INR
+            const pieChartRef = React.useRef(null);
+            const pieChartInstance = React.useRef(null);
+
+            // Simplified Indian Salary Structure (Percentages of CTC for demo purposes)
+            // Real structures vary greatly by company, level, and city.
+            const ANNUAL_BASIC_PERCENTAGE = 0.40; // 40% of CTC
+            const ANNUAL_HRA_PERCENTAGE = 0.20;   // 20% of CTC
+            const ANNUAL_SPECIAL_ALLOWANCE_PERCENTAGE = 0.20; // 20% of CTC
+            const ANNUAL_CONVEYANCE_ALLOWANCE = 19200; // Fixed annual value for 1600/month
+            const ANNUAL_MEDICAL_ALLOWANCE = 15000; // Fixed annual value
+
+            // Statutory contributions (usually based on Basic Salary)
+            const EPF_PERCENTAGE = 0.12; // 12% for employee and 12% for employer
+            const GRATUITY_PERCENTAGE_OF_BASIC = 0.0481; // Annualized ~4.81% of Basic for 5+ years service
+            const PROFESSIONAL_TAX_MONTHLY = 200; // Common fixed amount in some states (e.g., Maharashtra, Karnataka)
+
+            const annualBasic = ctc * ANNUAL_BASIC_PERCENTAGE;
+            const annualHRA = ctc * ANNUAL_HRA_PERCENTAGE;
+            const annualSpecialAllowance = ctc * ANNUAL_SPECIAL_ALLOWANCE_PERCENTAGE;
+
+            const annualEmployeeEPF = annualBasic * EPF_PERCENTAGE;
+            const annualEmployerEPF = annualBasic * EPF_PERCENTAGE;
+            const annualGratuity = annualBasic * GRATUITY_PERCENTAGE_OF_BASIC;
+
+            // Simplified Income Tax (very basic, actual tax is complex with many deductions/slabs)
+            const STANDARD_DEDUCTION_ANNUAL = 50000;
+            const annualTaxableIncomeBeforeSlabs = (annualBasic + annualHRA + annualSpecialAllowance + ANNUAL_CONVEYANCE_ALLOWANCE + ANNUAL_MEDICAL_ALLOWANCE) - annualEmployeeEPF - STANDARD_DEDUCTION_ANNUAL;
+
+            let annualSimplifiedTax = 0;
+            if (annualTaxableIncomeBeforeSlabs > 0) {
+                // A very simplified progressive tax-like structure for visualization
+                if (annualTaxableIncomeBeforeSlabs <= 500000) { // Up to 5 Lakhs
+                    annualSimplifiedTax = 0;
+                } else if (annualTaxableIncomeBeforeSlabs <= 1000000) { // 5L to 10L
+                    annualSimplifiedTax = (annualTaxableIncomeBeforeSlabs - 500000) * 0.05; // 5%
+                } else if (annualTaxableIncomeBeforeSlabs <= 1500000) { // 10L to 15L
+                    annualSimplifiedTax = 25000 + (annualTaxableIncomeBeforeSlabs - 1000000) * 0.10; // 25k + 10%
+                } else { // Above 15 Lakhs
+                    annualSimplifiedTax = 75000 + (annualTaxableIncomeBeforeSlabs - 1500000) * 0.15; // 75k + 15%
+                }
+            }
+            annualSimplifiedTax = Math.max(0, annualSimplifiedTax); // Ensure tax is not negative
+
+
+            const annualProfessionalTax = PROFESSIONAL_TAX_MONTHLY * 12;
+
+            // Calculate Annual In-Hand Pay
+            const annualInHandPay = ctc - annualEmployerEPF - annualGratuity - annualProfessionalTax - annualSimplifiedTax;
+
+
+            React.useEffect(() => {
+                if (pieChartInstance.current) {
+                    pieChartInstance.current.destroy();
+                }
+                if (pieChartRef.current) { // Defensive check: ensure canvas exists
+                    const ctx = pieChartRef.current.getContext('2d');
+                    pieChartInstance.current = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: [
+                                'Monthly Take-Home Pay (Annualized)',
+                                'Employee EPF (Annual)',
+                                'Employer EPF (Annual)',
+                                'Gratuity (Annualized)',
+                                'Other Components & Deductions (Annual)',
+                            ],
+                            datasets: [{
+                                data: [
+                                    annualInHandPay,
+                                    annualEmployeeEPF,
+                                    annualEmployerEPF,
+                                    annualGratuity,
+                                    ctc - annualInHandPay - annualEmployeeEPF - annualEmployerEPF - annualGratuity // The remaining part of CTC
+                                ],
+                                backgroundColor: [
+                                    '#34d399', // Green for take-home
+                                    '#facc15', // Yellow for EPF
+                                    '#fbbf24', // Orange for Employer EPF
+                                    '#a78bfa', // Purple for Gratuity
+                                    '#ef4444' // Red for Others/Deductions
+                                ],
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                    labels: {
+                                        color: '#d1d5db',
+                                        font: {size: 14}
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Annual CTC Breakdown',
+                                    color: '#e5e7eb',
+                                    font: {size: 18, weight: 'bold'}
+                                },
+                                tooltip: { // Added for INR formatting in tooltip
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += '₹' + context.parsed.toLocaleString('en-IN');
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+                return () => {
+                    pieChartInstance.current?.destroy();
+                };
+            }, [ctc, annualInHandPay, annualEmployeeEPF, annualEmployerEPF, annualGratuity]);
+
+
+            return (
+                <div className="flex-grow p-4 sm:p-6 lg:p-8 overflow-y-auto scroll-area">
+                    <h2 className="text-4xl font-bold text-white mb-8 flex items-center">
+                        <BarChart2Icon className="w-9 h-9 mr-3 text-cyan-400" /> PaySlipr
+                    </h2>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 max-w-2xl mx-auto mb-8">
+                        <div className="mb-6">
+                            <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="ctcInput">
+                                Annual CTC (Cost To Company) in ₹
+                            </label>
+                            <input
+                                type="number"
+                                id="ctcInput"
+                                value={ctc}
+                                onChange={(e) => setCtc(Number(e.target.value))}
+                                className="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-white leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                                placeholder="e.g., 1200000"
+                                min="0"
+                            />
+                        </div>
+
+                        <div className="mt-8 text-center bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <h3 className="text-2xl font-bold text-white mb-2">Estimated Monthly In-Hand Pay</h3>
+                            <p className="text-4xl font-extrabold text-green-400">₹{(annualInHandPay / 12).toLocaleString('en-IN')}</p>
+                            <p className="text-gray-400 text-sm mt-2">Annual In-Hand: ₹{annualInHandPay.toLocaleString('en-IN')}</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                            <h3 className="text-2xl font-semibold text-white mb-4">Annual Breakdowns</h3>
+                            <p className="text-gray-300 text-lg mb-2">Basic Salary: ₹{annualBasic.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mb-2">HRA: ₹{annualHRA.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mb-2">Special Allowance: ₹{annualSpecialAllowance.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mb-2">Conveyance Allowance: ₹{ANNUAL_CONVEYANCE_ALLOWANCE.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mb-2">Medical Allowance: ₹{ANNUAL_MEDICAL_ALLOWANCE.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mt-4">Employee EPF: ₹{annualEmployeeEPF.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg">Employer EPF: ₹{annualEmployerEPF.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg">Gratuity: ₹{annualGratuity.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg">Professional Tax: ₹{annualProfessionalTax.toLocaleString('en-IN')}</p>
+                            <p className="text-gray-300 text-lg mb-2">Simplified Income Tax: ₹{annualSimplifiedTax.toLocaleString('en-IN')}</p>
+                        </div>
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 h-96">
+                            <canvas ref={pieChartRef}></canvas>
+                        </div>
+                    </div>
+
+                    <div className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+                        <h3 className="text-2xl font-semibold text-white mb-4">Important Notes:</h3>
+                        <ul className="list-disc list-inside text-gray-300 space-y-2">
+                            <li>This calculator provides a simplified estimate based on common Indian salary structure assumptions for demo purposes.</li>
+                            <li>Actual in-hand pay can vary significantly based on company policies, your investment declarations (for tax savings), specific allowances, and actual tax slabs applicable to you.</li>
+                            <li>Income Tax Calculation: The income tax here is a highly simplified illustrative calculation and does not reflect the complex actual Indian income tax slabs, deductions, and exemptions.</li>
+                            <li>EPF and Gratuity: These are statutory components. EPF is a retirement saving. Gratuity is typically paid upon leaving service after 5 or more years.</li>
+                            <li>Always consult with a financial advisor or your company's HR/Payroll for an accurate breakdown of your salary.</li>
+                        </ul>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- Main App Component ---
+        function App() {
+            const [activeTool, setActiveTool] = React.useState('pennywise'); // Default active tool
+            const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false); // Mobile nav state
+
+            const toggleMobileNav = () => {
+                setIsMobileNavOpen(!isMobileNavOpen);
+            };
+
+            const selectTool = (toolName) => {
+                setActiveTool(toolName);
+                setIsMobileNavOpen(false); // Close mobile nav when a tool is selected
+            };
+
+            const renderActiveTool = () => {
+                switch (activeTool) {
+                    case 'pennywise': return <PennyWiseAI />;
+                    case 'credicalc': return <CrediCalc />;
+                    case 'payslipr': return <PaySlipr />; // New component
+                    default: return <PennyWiseAI />; // Fallback to PennyWise AI
+                }
+            };
+
+            return (
+                <div className="flex flex-grow h-full lg:flex-row flex-col"> {/* Corrected main app flex direction */}
+                    {/* Sidebar (Desktop) */}
+                    <aside className="hidden lg:flex w-64 bg-gray-900 border-r border-gray-800 flex-col p-4 shadow-xl flex-shrink-0"> {/* flex-shrink-0 to prevent shrinking */}
+                        <div className="flex items-center justify-between mb-8">
+                            <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center">
+                                <WalletIcon className="w-8 h-8 mr-2 text-cyan-500" /> FinTools
+                            </h1>
+                        </div>
+
+                        <nav className="mb-8 flex-grow">
+                            <ul>
+                                <li className="mb-2">
+                                    <button
+                                        onClick={() => selectTool('pennywise')}
+                                        className={`w-full text-left p-3 rounded-lg text-lg font-medium flex items-center transition-colors duration-200 ${activeTool === 'pennywise' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                    >
+                                        <WalletIcon className="w-6 h-6 mr-3" /> PennyWise AI
+                                    </button>
+                                </li>
+                                <li className="mb-2">
+                                    <button
+                                        onClick={() => selectTool('credicalc')}
+                                        className={`w-full text-left p-3 rounded-lg text-lg font-medium flex items-center transition-colors duration-200 ${activeTool === 'credicalc' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                    >
+                                        <CalculatorIcon className="w-6 h-6 mr-3" /> CrediCalc
+                                    </button>
+                                </li>
+                                <li className="mb-2">
+                                    <button
+                                        onClick={() => selectTool('payslipr')}
+                                        className={`w-full text-left p-3 rounded-lg text-lg font-medium flex items-center transition-colors duration-200 ${activeTool === 'payslipr' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                    >
+                                        <BarChart2Icon className="w-6 h-6 mr-3" /> PaySlipr
+                                    </button>
+                                </li>
+                                <li className="mb-2">
+                                    {/* Link back to main portfolio */}
+                                    <a
+                                        href="index.html"
+                                        target="_self"
+                                        className="flex items-center p-3 rounded-lg text-lg font-medium text-gray-300 hover:bg-gray-800 hover:text-cyan-300 transition-colors duration-200"
+                                    >
+                                        <HomeIcon className="w-6 h-6 mr-3" /> Back to Portfolio
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        {/* User/Account Info (Optional) */}
+                        <div className="border-t border-gray-800 pt-4 mt-auto">
+                            <div className="flex items-center text-gray-400 text-sm">
+                                <UserIcon className="w-5 h-5 mr-2" /> Dhruv Agarwal
+                            </div>
+                        </div>
+                    </aside>
+
+                    {/* Mobile Navigation Overlay */}
+                    {isMobileNavOpen && (
+                        <div className="fixed inset-0 bg-gray-950 bg-opacity-95 z-50 flex flex-col p-4 mobile-nav-enter mobile-nav-enter-active">
+                            <div className="flex justify-between items-center mb-8">
+                                <h1 className="text-3xl font-extrabold text-cyan-400 flex items-center">
+                                    <WalletIcon className="w-8 h-8 mr-2 text-cyan-500" /> FinTools
+                                </h1>
+                                <button onClick={toggleMobileNav} className="text-gray-300 hover:text-cyan-400 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-600">
+                                    <XIcon className="w-8 h-8" />
+                                </button>
+                            </div>
+                            <nav className="flex-grow">
+                                <ul>
+                                    <li className="mb-4">
+                                        <button
+                                            onClick={() => selectTool('pennywise')}
+                                            className={`w-full text-left p-4 rounded-lg text-2xl font-medium flex items-center transition-colors duration-200 ${activeTool === 'pennywise' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                        >
+                                            <WalletIcon className="w-8 h-8 mr-4" /> PennyWise AI
+                                        </button>
+                                    </li>
+                                    <li className="mb-4">
+                                        <button
+                                            onClick={() => selectTool('credicalc')}
+                                            className={`w-full text-left p-4 rounded-lg text-2xl font-medium flex items-center transition-colors duration-200 ${activeTool === 'credicalc' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                        >
+                                            <CalculatorIcon className="w-8 h-8 mr-4" /> CrediCalc
+                                        </button>
+                                    </li>
+                                    <li className="mb-4">
+                                        <button
+                                            onClick={() => selectTool('payslipr')}
+                                            className={`w-full text-left p-4 rounded-lg text-2xl font-medium flex items-center transition-colors duration-200 ${activeTool === 'payslipr' ? 'bg-gray-800 text-cyan-300' : 'text-gray-300 hover:bg-gray-800 hover:text-cyan-300'}`}
+                                        >
+                                            <BarChart2Icon className="w-8 h-8 mr-4" /> PaySlipr
+                                        </button>
+                                    </li>
+                                    <li className="mb-4">
+                                        {/* Link back to main portfolio */}
+                                        <a
+                                            href="index.html"
+                                            target="_self"
+                                            onClick={toggleMobileNav} // Close nav on click
+                                            className="flex items-center p-4 rounded-lg text-2xl font-medium text-gray-300 hover:bg-gray-800 hover:text-cyan-300 transition-colors duration-200"
+                                        >
+                                            <HomeIcon className="w-8 h-8 mr-4" /> Back to Portfolio
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div className="border-t border-gray-800 pt-4 mt-auto">
+                                <div className="flex items-center text-gray-400 text-sm">
+                                    <UserIcon className="w-5 h-5 mr-2" /> Dhruv Agarwal
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Main Content Area */}
+                    <main className="flex-grow flex flex-col bg-gray-900">
+                        {/* Header for mobile (with hamburger) */}
+                        <header className="flex items-center justify-between lg:hidden p-4 bg-gray-900 border-b border-gray-800 shadow-md flex-shrink-0"> {/* flex-shrink-0 */}
+                            <button
+                                onClick={toggleMobileNav}
+                                className="text-gray-300 hover:text-cyan-400 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-600"
+                            >
+                                <MenuIcon className="w-8 h-8" />
+                            </button>
+                            <h2 className="text-3xl font-bold text-white">FinTools</h2>
+                            <div className="w-8 h-8"></div> {/* Spacer for centering title */}
+                        </header>
+
+                        {/* Render Active Tool Content */}
+                        {renderActiveTool()}
+                    </main>
+                </div>
+            );
+        }
+
+        window.onload = function () {
+            ReactDOM.render(<App />, document.getElementById('root'));
+        };
+    </script>
+</body>
+
+</html>
