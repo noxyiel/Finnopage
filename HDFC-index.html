@@ -1,93 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HDFC Financial Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HDFC Financial Dashboard</title>
 
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    body {
-      background: #f6f9fc;
-      color: #333;
-      padding: 2rem;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #00264d;
-    }
-
-    header p {
-      font-size: 1.1rem;
-      color: #555;
-    }
-
-    .dashboard-container {
-      max-width: 1200px;
-      margin: auto;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    iframe {
-      width: 100%;
-      height: 700px;
-      border: none;
-      border-top: 1px solid #ddd;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.9rem;
-      margin-top: 2rem;
-      color: #888;
-    }
-
-    @media (max-width: 768px) {
-      iframe {
-        height: 500px;
-      }
-
-      header h1 {
-        font-size: 2rem;
-      }
-    }
-  </style>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column; /* Allow header, main, footer to stack vertically */
+        }
+        /* Custom scrollbar for content areas (if needed, though iframe handles its own) */
+        .scroll-area::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .scroll-area::-webkit-scrollbar-track {
+            background: #1a202c; /* gray-900 */
+        }
+        .scroll-area::-webkit-scrollbar-thumb {
+            background-color: #4a5568; /* gray-600 */
+            border-radius: 10px;
+            border: 2px solid #1a202c;
+        }
+        iframe {
+            width: 100%;
+            /* Keep original height or adjust with responsive classes */
+            height: 700px; /* Default for desktop */
+            border: none;
+        }
+        @media (max-width: 768px) {
+            iframe {
+                height: 500px; /* Adjusted for mobile view */
+            }
+        }
+    </style>
 </head>
-<body>
 
-  <header>
-    <h1>📊 HDFC Financial Dashboard</h1>
-    <p>Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
-  </header>
+<body class="bg-gray-950 text-gray-100 antialiased">
 
-  <div class="dashboard-container">
-    <iframe title="HDFC-financial-dashboard" 
-      src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536" 
-      allowFullScreen="true">
-    </iframe>
-  </div>
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-gray-900 to-blue-900 text-white py-8 px-4 text-center shadow-xl rounded-b-3xl">
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">📊 HDFC Financial Dashboard</h1>
+        <p class="max-w-xl mx-auto text-lg text-gray-300 leading-relaxed mb-6">Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
+        <nav class="mt-4 flex justify-center gap-4 sm:gap-6 flex-wrap">
+            <a href="index.html" class="inline-flex items-center px-6 py-2 border-2 border-fuchsia-600 text-fuchsia-300 font-semibold rounded-full hover:bg-fuchsia-700 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">Home</a>
+            <span class="inline-flex items-center px-6 py-2 border-2 border-blue-600 text-blue-300 font-semibold rounded-full bg-blue-800 text-white cursor-default shadow-lg">Dashboard</span>
+        </nav>
+    </header>
 
-  <footer>
-    Created by Dhruv Agarwal · BBA-IT, SICSR · Resume Project
-  </footer>
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="bg-gray-900 shadow-xl rounded-xl border border-gray-800 overflow-hidden">
+            <iframe title="HDFC-financial-dashboard"
+                src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536"
+                allowFullScreen="true"
+                class="rounded-xl">
+            </iframe>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm mt-12 rounded-t-3xl shadow-inner border-t border-gray-800">
+        Created by Dhruv Agarwal · BBA-IT, SICSR · Resume Project
+    </footer>
 
 </body>
+
 </html>
