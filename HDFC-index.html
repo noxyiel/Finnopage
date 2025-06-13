@@ -8,7 +8,6 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* Basic Reset & Font */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -16,159 +15,84 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* Body & Main Layout */
     body {
-      background: linear-gradient(135deg, #0a0a0f, #1a1a2e); /* Dark, subtle gradient for AI theme */
-      color: #e0e0e0; /* Light text for dark background */
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: #0e0e0e;
+      color: #f0f0f0;
       padding: 2rem;
     }
 
-    /* Header Styling */
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
-      padding: 0 1rem;
+      margin-bottom: 2rem;
     }
 
     header h1 {
       font-size: 2.8rem;
       font-weight: 800;
-      color: #4CAF50; /* Green accent for a techy feel */
-      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Subtle glow */
-      margin-bottom: 0.5rem;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
     }
 
     header p {
-      font-size: 1.15rem;
-      color: #b0b0b0; /* Slightly muted text */
-      max-width: 700px;
-      margin: 0 auto;
+      font-size: 1.1rem;
+      color: #cccccc;
+      margin-top: 0.5rem;
     }
 
-    /* Navigation Bar */
-    nav {
-      width: 100%;
-      max-width: 1200px;
-      display: flex;
-      justify-content: flex-start; /* Align home button to the left */
-      margin-bottom: 1.5rem;
-      padding: 0 1rem; /* Padding for smaller screens */
-    }
-
-    .home-button {
-      background-color: #007bff; /* Blue for action button */
-      color: white;
-      padding: 0.8rem 1.8rem;
-      border: none;
-      border-radius: 8px; /* Slightly more rounded */
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Button shadow */
-      text-decoration: none; /* Remove underline for anchor tag */
-      display: inline-flex;
-      align-items: center;
-      gap: 8px; /* Space between icon and text */
-    }
-
-    .home-button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px); /* Slight lift */
-      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
-    }
-
-    .home-button:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
-    }
-
-    /* Dashboard Container */
     .dashboard-container {
-      width: 100%;
       max-width: 1200px;
-      background: #1e1e2e; /* Darker background for the container */
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4); /* Stronger, deeper shadow */
-      border-radius: 16px; /* More rounded corners */
+      margin: auto;
+      background: #1c1c1c;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
       overflow: hidden;
-      border: 1px solid rgba(76, 175, 80, 0.3); /* Subtle green border */
-      flex-grow: 1; /* Allows container to take up available space */
-      display: flex;
-      flex-direction: column;
+      border: 1px solid #333;
     }
 
     iframe {
       width: 100%;
-      height: 700px; /* Default height */
+      height: 700px;
       border: none;
-      background-color: #2a2a3a; /* Even darker background for iframe area */
     }
 
-    /* Footer Styling */
+    .back-button {
+      display: inline-block;
+      margin: 1.5rem auto 2rem;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: #1a73e8;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.3s;
+      box-shadow: 0 0 8px rgba(26, 115, 232, 0.5);
+    }
+
+    .back-button:hover {
+      background-color: #0c54c2;
+    }
+
     footer {
       text-align: center;
       font-size: 0.9rem;
-      margin-top: 3rem;
-      color: #707070; /* Muted color for footer text */
-      padding: 0 1rem;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 1024px) {
-      header h1 {
-        font-size: 2.5rem;
-      }
-      header p {
-        font-size: 1.05rem;
-      }
-      iframe {
-        height: 600px; /* Adjust height for tablets */
-      }
+      margin-top: 2rem;
+      color: #777;
     }
 
     @media (max-width: 768px) {
-      body {
-        padding: 1.5rem;
+      iframe {
+        height: 500px;
       }
+
       header h1 {
         font-size: 2rem;
       }
-      header p {
-        font-size: 1rem;
-      }
-      nav {
-        justify-content: center; /* Center button on smaller screens */
-        margin-bottom: 1.2rem;
-      }
-      .home-button {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.9rem;
-      }
-      iframe {
-        height: 500px; /* Adjust height for mobile */
-      }
-    }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 1rem;
-      }
-      header h1 {
-        font-size: 1.8rem;
-      }
-      header p {
-        font-size: 0.9rem;
-      }
-      .home-button {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.85rem;
-      }
-      iframe {
-        height: 400px; /* Further adjust for very small screens */
+      .back-button {
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -180,22 +104,15 @@
     <p>Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
   </header>
 
-  <nav>
-    <!-- Home button - you can replace '#' with the actual URL of your index.html -->
-    <a href="index.html" class="home-button">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home">
-        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      Home
-    </a>
-  </nav>
-
   <div class="dashboard-container">
-    <iframe title="HDFC-financial-dashboard"
-      src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536"
+    <iframe title="HDFC-financial-dashboard" 
+      src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536" 
       allowFullScreen="true">
     </iframe>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="index.html" class="back-button">← Back to Home</a>
   </div>
 
   <footer>
