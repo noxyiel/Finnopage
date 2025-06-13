@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top 5 Financial Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0e0e0e;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 0 10px #ffffff;
+      background: #000;
+      border-bottom: 2px solid #222;
+    }
+
+    iframe {
+      margin-top: 30px;
+      border: none;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    .back-button {
+      text-decoration: none;
+      background-color: #ffffff10;
+      color: white;
+      padding: 10px 20px;
+      border: 1px solid white;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #ffffff30;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Top 5 Company Financials Dashboard
+  </header>
+
+  <div class="button-container">
+    <a href="index.html" class="back-button">← Back to Home</a>
+  </div>
+
+  <iframe title="top5-finance"
+    width="1140"
+    height="600"
+    src="https://app.powerbi.com/reportEmbed?reportId=aa486d46-e461-4f82-905b-50f1ebf6cd79&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536"
+    allowFullScreen="true">
+  </iframe>
+</body>
+</html>
