@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tesla Business Model Canvas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    header {
+      background: #1a1a1a;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+
+    h2 {
+      color: #cc0000;
+      margin-bottom: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .box {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .swot {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    img.visual {
+      max-width: 100%;
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    canvas {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+      padding: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Tesla Business Model Canvas</h1>
+    <p>A strategic deep dive into Tesla's value creation framework</p>
+  </header>
+
+  <div class="section">
+    <h2>Business Model Canvas</h2>
+    <div class="grid">
+      <div class="box">
+        <h3>Key Partners</h3>
+        <p>Battery suppliers, tech firms, government regulators, logistics partners.</p>
+      </div>
+      <div class="box">
+        <h3>Key Activities</h3>
+        <p>EV design, autonomous tech development, manufacturing, energy storage.</p>
+      </div>
+      <div class="box">
+        <h3>Key Resources</h3>
+        <p>Gigafactories, AI/software teams, patents, brand reputation.</p>
+      </div>
+      <div class="box">
+        <h3>Value Propositions</h3>
+        <p>Innovative EVs, sustainable energy, autonomous driving, direct-to-consumer sales.</p>
+      </div>
+      <div class="box">
+        <h3>Customer Relationships</h3>
+        <p>Personalized services, OTA updates, Tesla app, brand loyalty programs.</p>
+      </div>
+      <div class="box">
+        <h3>Channels</h3>
+        <p>Website, Tesla app, physical stores, social media, charging networks.</p>
+      </div>
+      <div class="box">
+        <h3>Customer Segments</h3>
+        <p>Eco-conscious consumers, premium car buyers, fleet operators.</p>
+      </div>
+      <div class="box">
+        <h3>Cost Structure</h3>
+        <p>R&D, factory operations, software development, raw materials.</p>
+      </div>
+      <div class="box">
+        <h3>Revenue Streams</h3>
+        <p>EV sales, software (FSD), energy storage, charging, carbon credits.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 3rem;">Industry Landscape</h2>
+    <p>Tesla competes in the electric vehicle (EV), clean energy, and autonomous driving markets. Its main competitors
+      include legacy automakers (Ford, GM), emerging EV startups (Rivian, Lucid), and tech-driven disruptors (Apple,
+      Waymo). Tesla holds a dominant EV market share in North America and China, driven by strong vertical integration,
+      brand loyalty, and innovation speed.</p>
+
+    <canvas id="marketShareChart" width="400" height="200"></canvas>
+
+    <h2>SWOT Analysis</h2>
+    <div class="swot">
+      <div class="box">
+        <h3>Strengths</h3>
+        <p>Strong brand, tech leadership, vertical integration, gigafactory scale, FSD software edge.</p>
+      </div>
+      <div class="box">
+        <h3>Weaknesses</h3>
+        <p>High production costs, reliance on Elon Musk, customer service complaints.</p>
+      </div>
+      <div class="box">
+        <h3>Opportunities</h3>
+        <p>EV market expansion, energy storage, grid services, robo-taxi deployment.</p>
+      </div>
+      <div class="box">
+        <h3>Threats</h3>
+        <p>Increased competition, regulatory hurdles, raw material shortages, economic downturn.</p>
+      </div>
+    </div>
+
+    <script>
+      const ctx = document.getElementById('marketShareChart').getContext('2d');
+      const marketShareChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Tesla', 'Ford', 'GM', 'BYD', 'Volkswagen'],
+          datasets: [{
+            label: 'EV Market Share (%)',
+            data: [21, 8, 7, 11, 9],
+            backgroundColor: ['#cc0000', '#0072C6', '#444', '#66BB6A', '#FF9800'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {display: true},
+            tooltip: {mode: 'index', intersect: false}
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {display: true, text: 'Market Share (%)'}
+            }
+          }
+        }
+      });
+    </script>
+</body>
+
+</html>
