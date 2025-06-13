@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HDFC Financial Dashboard</title>
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #f6f9fc;
+      color: #333;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #00264d;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 700px;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      color: #888;
+    }
+
+    @media (max-width: 768px) {
+      iframe {
+        height: 500px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📊 HDFC Financial Dashboard</h1>
+    <p>Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
+  </header>
+
+  <div class="dashboard-container">
+    <iframe title="HDFC-financial-dashboard" 
+      src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536" 
+      allowFullScreen="true">
+    </iframe>
+  </div>
+
+  <footer>
+    Created by Dhruv Agarwal · BBA-IT, SICSR · Resume Project
+  </footer>
+
+</body>
+</html>
