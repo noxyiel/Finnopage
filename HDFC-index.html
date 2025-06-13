@@ -1,78 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HDFC Financial Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HDFC Financial Dashboard</title>
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter for a modern look -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* Basic Reset & Font */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh; /* Ensure body takes full viewport height */
-            display: flex;
-            flex-direction: column; /* Allow header, main, footer to stack vertically */
-        }
-        /* Custom scrollbar for content areas (if needed, though iframe handles its own) */
-        .scroll-area::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        .scroll-area::-webkit-scrollbar-track {
-            background: #1a202c; /* gray-900 */
-        }
-        .scroll-area::-webkit-scrollbar-thumb {
-            background-color: #4a5568; /* gray-600 */
-            border-radius: 10px;
-            border: 2px solid #1a202c;
-        }
-        iframe {
-            width: 100%;
-            /* Keep original height or adjust with responsive classes */
-            height: 700px; /* Default for desktop */
-            border: none;
-        }
-        @media (max-width: 768px) {
-            iframe {
-                height: 500px; /* Adjusted for mobile view */
-            }
-        }
-    </style>
+    /* Body & Main Layout */
+    body {
+      background: linear-gradient(135deg, #0a0a0f, #1a1a2e); /* Dark, subtle gradient for AI theme */
+      color: #e0e0e0; /* Light text for dark background */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding: 0 1rem;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #4CAF50; /* Green accent for a techy feel */
+      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Subtle glow */
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      color: #b0b0b0; /* Slightly muted text */
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Navigation Bar */
+    nav {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: flex-start; /* Align home button to the left */
+      margin-bottom: 1.5rem;
+      padding: 0 1rem; /* Padding for smaller screens */
+    }
+
+    .home-button {
+      background-color: #007bff; /* Blue for action button */
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border: none;
+      border-radius: 8px; /* Slightly more rounded */
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); /* Button shadow */
+      text-decoration: none; /* Remove underline for anchor tag */
+      display: inline-flex;
+      align-items: center;
+      gap: 8px; /* Space between icon and text */
+    }
+
+    .home-button:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px); /* Slight lift */
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    }
+
+    .home-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+    }
+
+    /* Dashboard Container */
+    .dashboard-container {
+      width: 100%;
+      max-width: 1200px;
+      background: #1e1e2e; /* Darker background for the container */
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4); /* Stronger, deeper shadow */
+      border-radius: 16px; /* More rounded corners */
+      overflow: hidden;
+      border: 1px solid rgba(76, 175, 80, 0.3); /* Subtle green border */
+      flex-grow: 1; /* Allows container to take up available space */
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      width: 100%;
+      height: 700px; /* Default height */
+      border: none;
+      background-color: #2a2a3a; /* Even darker background for iframe area */
+    }
+
+    /* Footer Styling */
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      color: #707070; /* Muted color for footer text */
+      padding: 0 1rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      header p {
+        font-size: 1.05rem;
+      }
+      iframe {
+        height: 600px; /* Adjust height for tablets */
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.5rem;
+      }
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      nav {
+        justify-content: center; /* Center button on smaller screens */
+        margin-bottom: 1.2rem;
+      }
+      .home-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      iframe {
+        height: 500px; /* Adjust height for mobile */
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
+      header p {
+        font-size: 0.9rem;
+      }
+      .home-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+      iframe {
+        height: 400px; /* Further adjust for very small screens */
+      }
+    }
+  </style>
 </head>
+<body>
 
-<body class="bg-gray-950 text-gray-100 antialiased">
+  <header>
+    <h1>HDFC Financial Dashboard</h1>
+    <p>Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
+  </header>
 
-    <!-- Header Section -->
-    <header class="bg-gradient-to-r from-gray-900 to-blue-900 text-white py-8 px-4 text-center shadow-xl rounded-b-3xl">
-        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">📊 HDFC Financial Dashboard</h1>
-        <p class="max-w-xl mx-auto text-lg text-gray-300 leading-relaxed mb-6">Interactive analysis of HDFC Bank's key financial metrics (2020–2024)</p>
-        <nav class="mt-4 flex justify-center gap-4 sm:gap-6 flex-wrap">
-            <a href="index.html" class="inline-flex items-center px-6 py-2 border-2 border-fuchsia-600 text-fuchsia-300 font-semibold rounded-full hover:bg-fuchsia-700 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">Home</a>
-            <span class="inline-flex items-center px-6 py-2 border-2 border-blue-600 text-blue-300 font-semibold rounded-full bg-blue-800 text-white cursor-default shadow-lg">Dashboard</span>
-        </nav>
-    </header>
+  <nav>
+    <!-- Home button - you can replace '#' with the actual URL of your index.html -->
+    <a href="index.html" class="home-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Home
+    </a>
+  </nav>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div class="bg-gray-900 shadow-xl rounded-xl border border-gray-800 overflow-hidden">
-            <iframe title="HDFC-financial-dashboard"
-                src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536"
-                allowFullScreen="true"
-                class="rounded-xl">
-            </iframe>
-        </div>
-    </main>
+  <div class="dashboard-container">
+    <iframe title="HDFC-financial-dashboard"
+      src="https://app.powerbi.com/reportEmbed?reportId=9c5ccf60-7d4b-468a-b0e6-611d169cb0a2&autoAuth=true&ctid=5585330f-9739-4fc3-9558-6526f2590536"
+      allowFullScreen="true">
+    </iframe>
+  </div>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm mt-12 rounded-t-3xl shadow-inner border-t border-gray-800">
-        Created by Dhruv Agarwal · BBA-IT, SICSR · Resume Project
-    </footer>
+  <footer>
+    Created by Dhruv Agarwal · BBA-IT, SICSR · Resume Project
+  </footer>
 
 </body>
-
 </html>
