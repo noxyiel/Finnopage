@@ -1,274 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tesla Business Model</title>
-  <style>
-    :root {
-      --red: #cc0000;
-      --white: #ffffff;
-      --dark: #1a1a1a;
-      --bg: #f5f5f5;
-      --shadow: rgba(0, 0, 0, 0.08);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--dark);
-    }
-
-    header {
-      background: var(--dark);
-      color: var(--white);
-      padding: 2rem 1rem;
-      text-align: center;
-      position: relative;
-    }
-
-    header img {
-      height: 60px;
-      margin-bottom: 1rem;
-    }
-
-    nav {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--white);
-      background: transparent;
-      border: 2px solid var(--red);
-      padding: 0.5rem 1rem;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-
-    nav a:hover {
-      background: var(--red);
-      color: var(--white);
-      transform: scale(1.05);
-      box-shadow: 0 4px 10px var(--shadow);
-    }
-
-    main {
-      max-width: 1100px;
-      margin: auto;
-      padding: 2rem 1rem;
-    }
-
-    .intro {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .intro h2 {
-      color: var(--red);
-      margin-bottom: 1rem;
-    }
-
-    .intro p {
-      max-width: 800px;
-      margin: 0 auto 1rem auto;
-      font-size: 1rem;
-      color: #333;
-    }
-
-    .canvas-section h2 {
-      text-align: center;
-      color: var(--red);
-      margin-bottom: 2rem;
-    }
-
-    .canvas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .canvas-box {
-      background: var(--white);
-      border-radius: 15px;
-      padding: 1.2rem 1.5rem;
-      box-shadow: 0 8px 20px var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
-    }
-
-    .canvas-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .canvas-box h3 {
-      margin-bottom: 0.5rem;
-      color: #222;
-    }
-
-    .canvas-box p {
-      font-size: 0.95rem;
-      color: #555;
-    }
-
-    .financials {
-      margin-top: 4rem;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-
-    footer {
-      text-align: center;
-      background: var(--dark);
-      color: var(--white);
-      padding: 1rem;
-      margin-top: 3rem;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tesla Business Model</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for content areas */
+        .scroll-area::-webkit-scrollbar {
+            width: 8px;
+            height: 8px; /* For horizontal scroll if needed */
+        }
+        .scroll-area::-webkit-scrollbar-track {
+            background: #1a202c; /* gray-900 */
+        }
+        .scroll-area::-webkit-scrollbar-thumb {
+            background-color: #4a5568; /* gray-600 */
+            border-radius: 10px;
+            border: 2px solid #1a202c;
+        }
+    </style>
 </head>
 
-<body>
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg" alt="Tesla Logo" />
-    <h1>Tesla Business Model & Analysis</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="tesla-dashboard.html">Dashboard</a>
-      <a href="teslacanvas.html">Canvas</a>
-    </nav>
-  </header>
+<body class="bg-gray-950 text-gray-100 antialiased min-h-screen flex flex-col">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-8 px-4 text-center shadow-xl rounded-b-3xl">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg" alt="Tesla Logo" class="h-16 mx-auto mb-4" />
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Tesla Business Model & Analysis</h1>
+        <nav class="mt-6 flex justify-center gap-4 sm:gap-6 flex-wrap">
+            <a href="index.html" class="inline-flex items-center px-6 py-2 border-2 border-red-600 text-red-300 font-semibold rounded-full hover:bg-red-700 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">Home</a>
+            <a href="tesla-dashboard.html" class="inline-flex items-center px-6 py-2 border-2 border-fuchsia-600 text-fuchsia-300 font-semibold rounded-full hover:bg-fuchsia-700 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">Dashboard</a>
+            <a href="teslacanvas.html" class="inline-flex items-center px-6 py-2 border-2 border-teal-600 text-teal-300 font-semibold rounded-full hover:bg-teal-700 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg">Canvas</a>
+        </nav>
+    </header>
 
-  <main>
-    <section class="intro">
-      <h2>About Tesla</h2>
-      <p>
-        Tesla, Inc. is a leading electric vehicle and clean energy company driven by the mission to accelerate the
-        world’s transition to sustainable energy.
-      </p>
-      <p>
-        With groundbreaking innovations in EVs, battery tech, solar energy, and AI, Tesla is reshaping the automotive
-        and energy sectors.
-      </p>
-    </section>
-    <section class="financials">
-      <h2>Financial Overview (2018–2023)</h2>
-      <canvas id="revenueChart" width="100%" height="60"></canvas>
-    </section>
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto p-6 lg:p-8 flex-grow overflow-y-auto scroll-area">
+        <!-- Introduction Section -->
+        <section class="text-center mb-12 bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-800">
+            <h2 class="text-4xl font-bold text-red-500 mb-6">About Tesla</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed mb-4">
+                Tesla, Inc. is a leading electric vehicle and clean energy company driven by the mission to accelerate the
+                world’s transition to sustainable energy.
+            </p>
+            <p class="max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed">
+                With groundbreaking innovations in EVs, battery tech, solar energy, and AI, Tesla is reshaping the automotive
+                and energy sectors.
+            </p>
+        </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      const ctx = document.getElementById('revenueChart').getContext('2d');
+        <!-- Financial Overview Section -->
+        <section class="mt-12 bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800">
+            <h2 class="text-3xl font-bold text-fuchsia-500 mb-6 text-center">Financial Overview (2018–2023)</h2>
+            <div class="h-80 md:h-96 w-full"> <!-- Responsive height for chart -->
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </section>
 
-      const data = {
-        labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
-        datasets: [
-          {
-            label: 'Revenue (in $B)',
-            data: [21.4, 24.6, 31.5, 53.8, 81.5, 96.8],
-            borderColor: '#cc0000',
-            backgroundColor: 'rgba(204, 0, 0, 0.1)',
-            fill: true,
-            tension: 0.4
-          },
-          {
-            label: 'Net Income (in $B)',
-            data: [-0.98, 0.86, 0.72, 5.5, 12.6, 14.9],
-            borderColor: '#111',
-            backgroundColor: 'rgba(0,0,0,0.1)',
-            fill: true,
-            tension: 0.4
-          }
-        ]
-      };
+        <!-- Chart.js Script -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('revenueChart').getContext('2d');
 
-      const config = {
-        type: 'line',
-        data: data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top'
-            },
-            title: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: false
-            }
-          }
-        }
-      };
+                const data = {
+                    labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+                    datasets: [
+                        {
+                            label: 'Revenue (in $B)',
+                            data: [21.4, 24.6, 31.5, 53.8, 81.5, 96.8],
+                            borderColor: '#ef4444', /* Tailwind red-500 */
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)', /* Tailwind red-500 with transparency */
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#ef4444',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#ef4444',
+                        },
+                        {
+                            label: 'Net Income (in $B)',
+                            data: [-0.98, 0.86, 0.72, 5.5, 12.6, 14.9],
+                            borderColor: '#a8a29e', /* Tailwind gray-400 */
+                            backgroundColor: 'rgba(163, 163, 163, 0.2)', /* Tailwind gray-400 with transparency */
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#a8a29e',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#a8a29e',
+                        }
+                    ]
+                };
 
-      new Chart(ctx, config);
-    </script>
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Important for dynamic height
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#d1d5db', /* Tailwind gray-300 */
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: '#1f2937', /* Tailwind gray-800 */
+                                titleColor: '#e5e7eb',
+                                bodyColor: '#d1d5db',
+                                borderColor: '#4b5563',
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                displayColors: true,
+                            },
+                            title: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    color: '#d1d5db', /* Tailwind gray-300 */
+                                    callback: function(value) {
+                                        return '$' + value + 'B';
+                                    }
+                                },
+                                grid: {
+                                    color: '#374151', /* Tailwind gray-700 */
+                                    drawBorder: false
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#d1d5db' /* Tailwind gray-300 */
+                                },
+                                grid: {
+                                    color: '#374151', /* Tailwind gray-700 */
+                                    drawBorder: false
+                                }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(ctx, config);
+            });
+        </script>
 
 
-    <section class="canvas-section">
-      <h2>Business Model Canvas</h2>
-      <div class="canvas-grid">
-        <div class="canvas-box">
-          <h3>Key Partners</h3>
-          <p>Battery suppliers, charging networks, AI vendors, manufacturing allies, and government collaborators.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Key Activities</h3>
-          <p>Design, manufacturing, software development (FSD), battery R&D, and global logistics.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Key Resources</h3>
-          <p>Gigafactories, Autopilot IP, brand equity, solar infrastructure, AI engineers.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Value Propositions</h3>
-          <p>Zero-emission vehicles, superior tech, futuristic design, over-the-air updates, and energy efficiency.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Customer Relationships</h3>
-          <p>Direct-to-consumer sales, digital service support, Tesla app, loyalty through innovation.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Channels</h3>
-          <p>Official website, showrooms, mobile app, service centers, and online communities.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Customer Segments</h3>
-          <p>Eco-conscious buyers, tech adopters, luxury vehicle enthusiasts, and global investors.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Cost Structure</h3>
-          <p>Battery production, R&D, manufacturing operations, marketing, and AI development.</p>
-        </div>
-        <div class="canvas-box">
-          <h3>Revenue Streams</h3>
-          <p>EV sales, energy products, software (FSD), Supercharger fees, carbon credit sales.</p>
-        </div>
-      </div>
-    </section>
-  </main>
+        <!-- Business Model Canvas Section -->
+        <section class="mt-12">
+            <h2 class="text-3xl font-bold text-teal-500 mb-8 text-center">Business Model Canvas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Key Partners</h3>
+                    <p class="text-gray-300">Battery suppliers, charging networks, AI vendors, manufacturing allies, and government collaborators.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Key Activities</h3>
+                    <p class="text-gray-300">Design, manufacturing, software development (FSD), battery R&D, and global logistics.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Key Resources</h3>
+                    <p class="text-gray-300">Gigafactories, Autopilot IP, brand equity, solar infrastructure, AI engineers.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Value Propositions</h3>
+                    <p class="text-gray-300">Zero-emission vehicles, superior tech, futuristic design, over-the-air updates, and energy efficiency.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Customer Relationships</h3>
+                    <p class="text-gray-300">Direct-to-consumer sales, digital service support, Tesla app, loyalty through innovation.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Channels</h3>
+                    <p class="text-gray-300">Official website, showrooms, mobile app, service centers, and online communities.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Customer Segments</h3>
+                    <p class="text-gray-300">Eco-conscious buyers, tech adopters, luxury vehicle enthusiasts, and global investors.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Cost Structure</h3>
+                    <p class="text-gray-300">Battery production, R&D, manufacturing operations, marketing, and AI development.</p>
+                </div>
+                <div class="canvas-box bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                    <h3 class="text-xl font-semibold text-teal-400 mb-2">Revenue Streams</h3>
+                    <p class="text-gray-300">EV sales, energy products, software (FSD), Supercharger fees, carbon credit sales.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-  <footer>
-    &copy; 2025 Tesla Model Project by Dhruv Agarwal
-  </footer>
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-sm mt-12 rounded-t-3xl shadow-inner border-t border-gray-800">
+        &copy; 2025 Tesla Model Project by Dhruv Agarwal. All rights reserved.
+    </footer>
 </body>
-
 </html>
